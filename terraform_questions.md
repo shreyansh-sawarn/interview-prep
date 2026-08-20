@@ -31,27 +31,6 @@ The exact lifecycle of how the command executes involves several distinct phases
 * Targeted destruction: If you want to tear down a single resource instead of the entire architecture, use the targeted flag: terraform destroy -target=resource_type.resource_name.
 * Accidental protection: You can protect highly critical components (like production databases) by adding prevent_destroy = true inside the resource's lifecycle block. Terraform will completely block any manual or accidental execution of a full destroy command if a protected resource is targeted. [2, 3, 6, 11, 12] 
 
-If you are looking to troubleshoot a specific scenario, let me know:
-
-* Are you getting a specific error message during destruction?
-* Do you have orphaned resources that refuse to clear out?
-* Are you trying to delete a single specific resource while keeping the rest?
-
-I can provide the exact command or workaround you need.
-
-[1] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/cli/commands/destroy)
-[2] [https://spacelift.io](https://spacelift.io/blog/how-to-destroy-terraform-resources)
-[3] [https://www.youtube.com](https://www.youtube.com/watch?v=6SGVdtko_AU)
-[4] [https://www.firefly.ai](https://www.firefly.ai/academy/terraform-destroy)
-[5] [https://www.youtube.com](https://www.youtube.com/watch?v=COno3-VkQ2U&t=6)
-[6] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-how-to-destroy-all-infrastructure-with-terraform-destroy/view)
-[7] [https://www.everpuredata.com](https://www.everpuredata.com/knowledge/terraform-destroy.html)
-[8] [https://medium.com](https://medium.com/@bytecoders/terraform-article-10-what-is-terraform-destroy-and-cleanup-explained-fd197ba4f2a8)
-[9] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/tutorials/configuration-language/move-config)
-[10] [https://www.firefly.ai](https://www.firefly.ai/academy/terraform-destroy)
-[11] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/language/resources/destroy)
-[12] [https://www.youtube.com](https://www.youtube.com/watch?v=8_aiU519Ld4&t=86)
-
 # give me the different types of terraform commands
 
 Terraform commands are divided into core workflow commands (the primary loop for managing infrastructure) and utility commands (used for management, troubleshooting, and formatting). [1, 2] 
@@ -84,42 +63,6 @@ Used to keep code clean, readable, and dynamically functional. [22]
 * terraform output: Extracts and displays the values of declared output variables from the state file.
 * terraform console: Opens an interactive command-line terminal to test, evaluate, and experiment with Terraform expressions and functions.
 * terraform providers: Prints a structured tree showing all the cloud provider plugins required by the current configuration. [23, 24, 25, 26, 27] 
-
-If you want to dive deeper into using these, tell me:
-
-* Do you want to see the syntax for a specific command (like import or state rm)?
-* Are you trying to automate these within a CI/CD pipeline?
-* Are you dealing with a corrupted or locked state file right now?
-
-I can provide the exact steps or flags needed for your situation.
-
-[1] [https://www.womencodingcommunity.com](https://www.womencodingcommunity.com/assets/resources/events/tech-talk-060624.pdf)
-[2] [https://www.geeksforgeeks.org](https://www.geeksforgeeks.org/linux-unix/basic-system-controls-with-terminal-in-linux/)
-[3] [https://www.env0.com](https://www.env0.com/blog/what-is-terraform-cli)
-[4] [https://www.cherryservers.com](https://www.cherryservers.com/blog/first-terraform-configuration)
-[5] [https://builder.aws.com](https://builder.aws.com/content/2m0lM6h89maXdu7HlQXqZ0UhUES/terraform-tactics-a-guide-to-mastering-terraform-commands-for-devops)
-[6] [https://codewithmukesh.com](https://codewithmukesh.com/blog/automate-aws-infrastructure-provisioning-with-terraform/)
-[7] [https://zerotomastery.io](https://zerotomastery.io/blog/terraform-cli-commands/)
-[8] [https://www.env0.com](https://www.env0.com/blog/what-is-terraform-cli)
-[9] [https://kodekloud.com](https://kodekloud.com/blog/introduction-to-terraform/)
-[10] [https://www.cherryservers.com](https://www.cherryservers.com/blog/terraform-cheat-sheet)
-[11] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/language/resources/destroy)
-[12] [https://medium.com](https://medium.com/reddragon-solutions/terraform-101-on-oracle-cloud-infrastructure-oci-ebcf32723c8a)
-[13] [https://cyberpanel.net](https://cyberpanel.net/blog/terraform-destroy)
-[14] [https://spacelift.io](https://spacelift.io/blog/terraform-state-list)
-[15] [https://ibrahims.medium.com](https://ibrahims.medium.com/azure-terraform-pipeline-devops-b57005a37936)
-[16] [https://at-devops.hashnode.dev](https://at-devops.hashnode.dev/terraform-from-scratch)
-[17] [https://www.cherryservers.com](https://www.cherryservers.com/blog/terraform-cheat-sheet)
-[18] [https://medium.com](https://medium.com/@dibaekhanal101/terraform-101-8f4a5e9ca0e9)
-[19] [https://www.cherryservers.com](https://www.cherryservers.com/blog/terraform-cheat-sheet)
-[20] [https://medium.com](https://medium.com/terraform-beyond/state-management-in-terraform-local-vs-remote-6af382ab063c)
-[21] [https://spacelift.io](https://spacelift.io/blog/terraform-state-list)
-[22] [https://afrazmomin.com](https://afrazmomin.com/simplifying-dynamic-blocks)
-[23] [https://zerotomastery.io](https://zerotomastery.io/blog/terraform-cli-commands/)
-[24] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/cli/commands/fmt)
-[25] [https://aws.plainenglish.io](https://aws.plainenglish.io/319-why-terraform-fmt-recursive-is-a-life-saver-7f4a16a9edd2)
-[26] [https://www.firefly.ai](https://www.firefly.ai/academy/terraform-fmt)
-[27] [https://zerotomastery.io](https://zerotomastery.io/cheatsheets/terraform-cheat-sheet/)
 
 # what if there are 400 manually created different kinds of resources. how to import all of them? and how to maintain them?
 
@@ -155,11 +98,9 @@ This approach uses a declarative import block combined with a code generation fl
 ## Strategy B: Use Bulk Open-Source Tools (Like Terraformer)
 If retrieving 400 IDs manually is too time-consuming, use a reverse-engineering tool like [Terraformer by Waze](https://stackoverflow.com/questions/66884517/terraform-aws-is-it-possible-to-import-all-aws-resources-in-one-time-terrafo).
 
-* 
 * Terraformer allows you to point to a cloud account/region and tell it to dump every existing resource.
 * Command example: terraformer import aws --resources=vpc,subnet,sg,ec2 --regions=us-east-1
 * Warning: The code generated by third-party tools can be very messy and hard to read. You will need to spend time refactoring it. [4, 16, 17] 
-* 
 
 ------------------------------
 ## Part 2: How to Maintain 400+ Resources
@@ -169,65 +110,22 @@ Implement a strict team policy: no one modifies these 400 resources via the clou
 ## 2. Segment into Multiple State Files (Blast Radius Management)
 Do not keep 400 resources inside a single, massive Terraform state file. If one resource errors out, it could lock or stall your entire pipeline. Separate them into isolated structural workspaces or folders: [4, 18, 20, 21] 
 
-* 
 * Folder 1 (Core Network): VPCs, Subnets, Internet Gateways.
 * Folder 2 (Data Layer): RDS Databases, S3 Buckets, Redis clusters.
 * Folder 3 (App Layer): EC2 instances, Load Balancers, ECS tasks.
 * Link them together safely using the terraform_remote_state data source. [6, 20, 22, 23] 
-* 
 
 ## 3. Automate Drift Detection
 Even with strict rules, someone might bypass Terraform and make an emergency change via the cloud console. [24] 
 
-* 
 * Set up a daily cron job or CI/CD pipeline (GitHub Actions, GitLab CI) to run terraform plan -detailed-exitcode automatically.
 * If a team member modifies a resource manually, the daily plan will fail or trigger an alert showing that real-world infrastructure has "drifted" from your repository's code.
-* 
 
 ## 4. Remote State and Versioning
 
-* 
 * Save your state file in a secure, central location like an AWS S3 Bucket or Azure Blob Storage.
 * Turn on State Locking (via AWS DynamoDB) to stop two developers from running commands at the exact same time and corrupting your state.
 * Turn on Bucket Versioning. If a bulk command corrupts your file, you can roll back to the previous state version instantly. [20, 25, 26] 
-* 
-
-If you are about to start this migration, let me know:
-
-* 
-* Which cloud provider (AWS, Azure, GCP) are these resources sitting in?
-* What is the dominant resource type (e.g., mostly VMs, mostly IAM roles, or networking)?
-* Are you managing this migration alone, or as part of a larger engineering team?
-* 
-
-I can write out a customized multi-resource configuration template to get you moving.
-
-[1] [https://codingprotocols.com](https://codingprotocols.com/blog/terraform-import-existing-infrastructure)
-[2] [https://medium.com](https://medium.com/@sampark02/terraform-import-with-automatic-code-generation-6b2267490043)
-[3] [https://scalr.com](https://scalr.com/learning-center/the-ultimate-guide-to-terraform-import)
-[4] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-how-to-import-large-numbers-of-resources-in-terraform/view)
-[5] [https://help.volusion.com](https://help.volusion.com/s/allaboutimportexport)
-[6] [https://scalr.com](https://scalr.com/learning-center/the-ultimate-guide-to-terraform-import)
-[7] [https://www.youtube.com](https://www.youtube.com/watch?v=znfh_00EDZ0&t=1251)
-[8] [https://www.youtube.com](https://www.youtube.com/watch?v=SShHumn5Grc&t=212)
-[9] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-03-20-generate-configuration-after-import-opentofu/view)
-[10] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/language/import/generating-configuration)
-[11] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-terraform-generate-configuration-imported-resources/view)
-[12] [https://medium.com](https://medium.com/technoid-community/new-terraform-import-1-5-a6ca245a7daf)
-[13] [https://stackoverflow.com](https://stackoverflow.com/questions/60461575/how-to-use-terraform-import-with-resource-configuration)
-[14] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/tutorials/state/state-import)
-[15] [https://medium.com](https://medium.com/@kaliarch/terraform-solution-for-importing-existing-cloud-resources-3150ed7fc8b4)
-[16] [https://stackoverflow.com](https://stackoverflow.com/questions/66884517/terraform-aws-is-it-possible-to-import-all-aws-resources-in-one-time-terrafo)
-[17] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-how-to-import-large-numbers-of-resources-in-terraform/view)
-[18] [https://www.stackguardian.io](https://www.stackguardian.io/post/terraform-import-at-scale-what-the-docs-dont-tell-you)
-[19] [https://www.youtube.com](https://www.youtube.com/watch?v=qkWUuB8uMN4&t=242)
-[20] [https://github.com](https://github.com/ozbillwang/terraform-best-practices/blob/master/README.md)
-[21] [https://xebia.com](https://xebia.com/blog/four-tips-to-better-structure-terraform-projects/)
-[22] [https://3cloudsolutions.com](https://3cloudsolutions.com/resources/the-data-lake-raw-zone/)
-[23] [https://devblogs.microsoft.com](https://devblogs.microsoft.com/ise/best-practices-infrastructure-pipelines/)
-[24] [https://flashgenius.net](https://flashgenius.net/blog-article/terraform-004-infrastructure-as-code-concepts-practice-questions)
-[25] [https://medium.com](https://medium.com/@malachieborohoul/managing-terraform-state-practical-solutions-for-enterprises-7667159cca39)
-[26] [https://medium.com](https://medium.com/@arpitparekh54/a-deep-dive-into-azure-storage-services-380d78db08e6)
 
 # difference between count and for each
 
@@ -285,38 +183,6 @@ resource "aws_iam_user" "users" {
 * Use for_each if:
 * You are creating resources that require unique names, configurations, or distinct parameters.
    * The list of items could change over time, and you want to be able to add or delete items from the middle of the collection safely. [20, 21, 22, 23, 24] 
-
-If you are currently writing a loop for your infrastructure, let me know:
-
-* What specific resource (e.g., subnets, EC2 instances, S3 buckets) are you trying to loop over?
-* Do the resources need unique attributes like distinct sizes, IDs, or IP blocks?
-
-I can write out the exact config file you need to handle that loop safely.
-
-[1] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-01-24-terraform-count-for-each/view)
-[2] [https://spacelift.io](https://spacelift.io/blog/terraform-count)
-[3] [https://build5nines.com](https://build5nines.com/terraform-use-for_each-to-deploy-multiple-resources/)
-[4] [https://dev.to](https://dev.to/envzero/terraform-count-indexing-examples-and-use-cases-of7)
-[5] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-09-terraform-foreach-multiple-resources/view)
-[6] [https://discuss.hashicorp.com](https://discuss.hashicorp.com/t/for-each-with-list-number/6596)
-[7] [https://medium.com](https://medium.com/@ksandeepkumar049/terraform-count-vs-for-each-a-complete-guide-with-examples-f0695e0c2338)
-[8] [https://spacelift.io](https://spacelift.io/blog/terraform-count-for-each)
-[9] [https://dev.to](https://dev.to/pwd9000/terraform-understanding-count-and-foreach-loops-c6i)
-[10] [https://spacelift.io](https://spacelift.io/blog/terraform-count)
-[11] [https://spacelift.io](https://spacelift.io/blog/terraform-count)
-[12] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-terraform-count-index/view)
-[13] [https://medium.com](https://medium.com/@purnachandrasharma1/a-comprehensive-guide-to-the-for-each-meta-argument-in-terraform-7b59c5a25735)
-[14] [https://www.digihunch.com](https://www.digihunch.com/2024/08/debating-between-count-and-for_each-in-terraform/)
-[15] [https://spacelift.io](https://spacelift.io/blog/terraform-count-for-each)
-[16] [https://www.env0.com](https://www.env0.com/blog/terraform-for-loops-guide-types-examples-and-best-practices)
-[17] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-09-terraform-foreach-multiple-resources/view)
-[18] [https://spacelift.io](https://spacelift.io/blog/terraform-count-for-each)
-[19] [https://www.env0.com](https://www.env0.com/blog/terraform-for-loops-guide-types-examples-and-best-practices)
-[20] [https://dev.to](https://dev.to/pwd9000/terraform-understanding-count-and-foreach-loops-c6i)
-[21] [https://medium.com](https://medium.com/@bytecoders/terraform-article-11-what-are-advanced-terraform-patterns-for-each-toset-tomap-and-aws-82f3eac5be06)
-[22] [https://thenewstack.io](https://thenewstack.io/how-to-use-terraforms-for_each-with-examples/)
-[23] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-09-terraform-foreach-multiple-resources/view)
-[24] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-how-to-use-module-for-each-in-terraform/view)
 
 # difference between variables.tf and locals.tf
 
@@ -380,27 +246,8 @@ resource "aws_s3_bucket" "storage" {
 ------------------------------
 ## Golden Rules for Best Practices
 
-* 
 * Don't weaponize locals: A common anti-pattern is creating deeply nested, 50-line local expressions that reference other locals five layers deep. If a local is too hard to read, it becomes impossible to debug. Keep them simple. [2, 7] 
 * Control vs. Logic: If a team member needs to change the value across different environments (like moving from staging to production), it belongs in variables.tf. If the value is a strict rule that should never be manipulated externally (like a corporate naming scheme), it belongs in locals.tf. [2, 5, 7] 
-* 
-
-If you are structuring a new module right now, let me know:
-
-* 
-* Do you have a complex string or map requirement you're struggling to format?
-* Are you unsure whether a specific setting (like a CIDR block or a resource tag) should be public or private?
-* 
-
-I can help you map out the clean file breakdown for your configuration.
-
-[1] [https://www.reddit.com](https://www.reddit.com/r/Terraform/comments/12tob5q/when_to_use_locals_vs_variables/)
-[2] [https://www.firefly.ai](https://www.firefly.ai/academy/terraform-locals)
-[3] [https://www.reddit.com](https://www.reddit.com/r/Terraform/comments/12tob5q/when_to_use_locals_vs_variables/)
-[4] [https://discuss.hashicorp.com](https://discuss.hashicorp.com/t/terraform-locals-vs-variables/34195)
-[5] [https://sailor.sh](https://sailor.sh/blog/terraform-variables-outputs-locals-guide/)
-[6] [https://scalr.com](https://scalr.com/learning-center/terraform-locals)
-[7] [https://sailor.sh](https://sailor.sh/blog/terraform-variables-outputs-locals-guide/)
 
 # what is terraform lifecycle? and remote backend?
 
@@ -461,14 +308,6 @@ terraform {
   }
 }
 
-If you are setting this up for your project, let me know:
-
-* Which cloud provider are you targetting for your infrastructure?
-* Are you setting up your first remote state bucket right now?
-* Do you need help managing state locks or resolving an existing state lock error?
-
-I can provide the exact backend boilerplates or lock clearing commands for your provider.
-
 # how to unlock a locked state file?
 
 To unlock a locked state file, you must remove the lock that Terraform uses to prevent concurrent operations. When an operation finishes normally, Terraform releases this lock automatically. However, if a migration crashes, losing connection mid-run, or if you force-quit a command using Ctrl + C, the lock remains stuck in place. [1, 2, 3] 
@@ -510,38 +349,7 @@ Rarely, if your cloud permissions are broken or your local environment loses acc
 
 * AWS S3 + DynamoDB: Open your AWS Web Console, navigate to your DynamoDB table (the one specified in your backend block), look at the table items, find the row matching your State Path or Lock ID, and delete that row manually. [17] 
 * Azure Blob Storage: Navigate to your storage account container inside the Azure Portal, click on the specific .tfstate blob file, and click Break Lease in the toolbar. [18, 19, 20] 
-* HashiCorp Cloud Platform (HCP) / Terraform Cloud: Open the web workspace UI, navigate to the Settings menu, select Locking, and click the clear/unlock button directly inside the interface. [21, 22] 
-
-If you are trying to resolve this right now, let me know:
-
-* What backend provider (S3, Azure, HCP Cloud) are you currently using?
-* Did the force-unlock command give you a specific permission error? [23] 
-
-I can provide the exact terminal commands or policy settings needed to get your pipeline running again.
-
-[1] [https://www.freecodecamp.org](https://www.freecodecamp.org/news/how-to-migrate-to-s3-native-state-locking-in-terraform/)
-[2] [https://medium.com](https://medium.com/@sampark02/terraform-state-file-locking-preventing-conflicts-in-infrastructure-management-ff0f819a8e1f)
-[3] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-terraform-force-unlock-command/view)
-[4] [https://spacelift.io](https://spacelift.io/blog/terraform-force-unlock)
-[5] [https://spacelift.io](https://spacelift.io/blog/terraform-force-unlock)
-[6] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-how-to-fix-error-acquiring-the-state-lock-in-terraform/view)
-[7] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-03-20-opentofu-force-unlock/view)
-[8] [https://stategraph.com](https://stategraph.com/blog/dont-force-unlock-terraform-state)
-[9] [https://medium.com](https://medium.com/@nikhil.nagarajappa/terraforms-force-unlock-command-manually-unlocking-state-configuration-a39e75f7ca51)
-[10] [https://spacelift.io](https://spacelift.io/blog/terraform-force-unlock)
-[11] [https://stategraph.com](https://stategraph.com/blog/terraform-backend-s3)
-[12] [https://github.com](https://github.com/minamijoyo/tflock)
-[13] [https://spacelift.io](https://spacelift.io/blog/terraform-force-unlock)
-[14] [https://www.thegeekyway.com](https://www.thegeekyway.com/terraform-state-locking-and-force-unlock/)
-[15] [https://medium.com](https://medium.com/@nikhil.nagarajappa/terraforms-force-unlock-command-manually-unlocking-state-configuration-a39e75f7ca51)
-[16] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/cli/commands/force-unlock)
-[17] [https://www.linkedin.com](https://www.linkedin.com/pulse/rescuing-my-terraform-dreams-how-aws-versioning-helped-patrick-okwute)
-[18] [https://learn.microsoft.com](https://learn.microsoft.com/en-us/answers/questions/1354529/how-to-unlock-a-tfstate-file-in-terraform-blob-sto)
-[19] [https://dev.to](https://dev.to/techwithhari/i-fixed-a-terraform-state-lock-issue-in-github-actions-heres-what-i-learned-ml8)
-[20] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-23-how-to-use-the-lock-and-lock-timeout-flags-in-terraform/view)
-[21] [https://support.hashicorp.com](https://support.hashicorp.com/hc/en-us/articles/4408868315155-Failed-to-unlock-state-lock-ID-does-not-match-existing-lock-ID)
-[22] [https://dzone.com](https://dzone.com/articles/terraform-state-file-challenges-and-solutions)
-[23] [https://github.com](https://github.com/hashicorp/terraform/issues/19296)
+* HashiCorp Cloud Platform (HCP) / Terraform Cloud: Open the web workspace UI, navigate to the Settings menu, select Locking, and click the clear/unlock button directly inside the interface. [21, 22]
 
 # terraform import command
 
@@ -609,63 +417,6 @@ Run terraform plan. Because your resource block is blank, Terraform will show a 
    2. One at a time (Legacy): The legacy CLI command can only import one single resource at a time. If you have dozens of items, use the modern import blocks instead. [43, 44, 45] 
    3. Does not modify infrastructure: Running an import will never change, recreate, or delete your live cloud environment. It is purely a data-gathering step for the state file. [46, 47, 48, 49] 
 
-If you are trying to import something right now, let me know:
-
-* What specific resource are you trying to import (e.g., an AWS VPC, an Azure VM, a GCP bucket)?
-* Do you know its exact cloud ID or ARN?
-* What version of Terraform are you currently running (terraform version)?
-
-I can provide the exact command or import block tailored to that resource.
-
-[1] [https://terrateam.io](https://terrateam.io/blog/terraform-import)
-[2] [https://cloud.ibm.com](https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-about-ibm-cloud-provider-plugin)
-[3] [https://www.slideshare.net](https://www.slideshare.net/slideshow/terraform-tfstate/252387552)
-[4] [https://www.solarwinds.com](https://www.solarwinds.com/blog/creating-your-first-module-using-terraform)
-[5] [https://developer.hashicorp.com](https://developer.hashicorp.com/validated-patterns/terraform/upgrade-and-refactor-terraform-modules)
-[6] [https://blog.wkhoo.com](https://blog.wkhoo.com/posts/terraform-import/)
-[7] [https://github.com](https://github.com/cloudflare/cf-terraforming)
-[8] [https://spacelift.io](https://spacelift.io/blog/importing-exisiting-infrastructure-into-terraform)
-[9] [https://www.tothenew.com](https://www.tothenew.com/blog/no-more-manual-terraform-imports-learn-the-new-way/)
-[10] [https://masterpoint.io](https://masterpoint.io/blog/standard-tf-files/)
-[11] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/tutorials/state/state-import)
-[12] [https://www.env0.com](https://www.env0.com/blog/terraform-import-commands-example-tips-and-best-practices)
-[13] [https://medium.com](https://medium.com/globant/importing-resources-into-terraform-state-2e6ff84b743b)
-[14] [https://medium.com](https://medium.com/google-cloud/automating-alert-creation-with-terraform-config-driven-import-in-google-cloud-%EF%B8%8F-1c9093ddd79f)
-[15] [https://blog.devgenius.io](https://blog.devgenius.io/how-to-import-multiple-resources-into-terraform-d66b5e925532)
-[16] [https://discuss.hashicorp.com](https://discuss.hashicorp.com/t/no-file-generated-with-plan-generate-config-out-test-tf/70067)
-[17] [https://www.hashicorp.com](https://www.hashicorp.com/en/blog/terraform-1-5-brings-config-driven-import-and-checks)
-[18] [https://aws.plainenglish.io](https://aws.plainenglish.io/how-to-import-an-existing-cloud-infra-using-terraform-ff52a785a8f7)
-[19] [https://medium.com](https://medium.com/google-cloud/automating-alert-creation-with-terraform-config-driven-import-in-google-cloud-%EF%B8%8F-1c9093ddd79f)
-[20] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/language/import/generating-configuration)
-[21] [https://medium.com](https://medium.com/technoid-community/new-terraform-import-1-5-a6ca245a7daf)
-[22] [https://developer.hashicorp.com](https://developer.hashicorp.com/terraform/language/state)
-[23] [https://medium.com](https://medium.com/@sunny.chodapaneedi/migrating-azure-storage-account-deployed-using-terraform-terraform-import-block-707513794a51)
-[24] [https://www.firefly.ai](https://www.firefly.ai/blog/terraform-import)
-[25] [https://terrateam.io](https://terrateam.io/blog/terraform-import)
-[26] [https://discuss.hashicorp.com](https://discuss.hashicorp.com/t/import-resource-and-required-values/49450)
-[27] [https://medium.com](https://medium.com/@rishusingh13615/terraform-from-scratch-a-practical-guide-for-beginners-a9bb653343eb)
-[28] [https://notes.kodekloud.com](https://notes.kodekloud.com/docs/Terraform-Associate-Certification-HashiCorp-Certified/Use-the-Terraform-CLI/Terraform-Import/page)
-[29] [https://www.env0.com](https://www.env0.com/blog/terraform-import-commands-example-tips-and-best-practices)
-[30] [https://scalr.com](https://scalr.com/learning-center/the-ultimate-guide-to-terraform-import)
-[31] [https://terramate.io](https://terramate.io/rethinking-iac/a-comprehensive-guide-to-importing-existing-infrastructure-into-terraform-and-opentofu/)
-[32] [https://www.youtube.com](https://www.youtube.com/watch?v=miz6jTSHn7s)
-[33] [https://www.everpuredata.com](https://www.everpuredata.com/au/knowledge/what-is-terraform-import.html)
-[34] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-16-how-to-create-terraform-import-blocks-for-bulk-azure-resource-state-migration/view)
-[35] [https://skundunotes.com](https://skundunotes.com/2021/07/31/what-is-terraform-import-and-why-you-too-should-know-about-it/)
-[36] [https://www.linkedin.com](https://www.linkedin.com/pulse/terraform-import-what-how-use-sharath-manuel-6krnc)
-[37] [https://terrateam.io](https://terrateam.io/blog/aws-s3-import)
-[38] [https://www.infracloud.io](https://www.infracloud.io/blogs/auto-generate-terraform-configuration-files/)
-[39] [https://dipolimene.medium.com](https://dipolimene.medium.com/importing-your-existing-azure-resources-under-the-management-of-terraform-using-azure-terrafy-2d03081a83f1)
-[40] [https://www.linkedin.com](https://www.linkedin.com/pulse/terraform-import-what-how-use-sharath-manuel-6krnc)
-[41] [https://www.tothenew.com](https://www.tothenew.com/blog/no-more-manual-terraform-imports-learn-the-new-way/)
-[42] [https://cloudinstitution.com](https://cloudinstitution.com/terraform-init/)
-[43] [https://muguku.medium.com](https://muguku.medium.com/import-multiple-aws-modules-or-resources-into-one-terraform-resource-block-with-the-count-dcca6fd55cb4)
-[44] [https://oneuptime.com](https://oneuptime.com/blog/post/2026-02-17-how-to-use-terraform-import-blocks-to-bulk-import-gcp-resources/view)
-[45] [https://nextlinklabs.com](https://nextlinklabs.com/resources/insights/importing-existing-infrastructure-into-terraform-with-claude-code)
-[46] [https://www.linkedin.com](https://www.linkedin.com/pulse/terraform-import-what-how-use-sharath-manuel-6krnc)
-[47] [https://www.firefly.ai](https://www.firefly.ai/blog/terraform-import)
-[48] [https://www.entrans.ai](https://www.entrans.ai/blog/migrate-existing-infrastructure-to-terraform)
-[49] [https://azapril.dev](https://azapril.dev/2020/06/19/azurermprovider2-update/)
 
 # where do you get the id?
 
@@ -722,16 +473,3 @@ az network vnet show --resource-group prod-rg --name prod-vnet --query id --outp
 * GCP gcloud CLI (List VM URI paths):
 
 gcloud compute instances list --format="value(selfLink)"
-
-
-If you have a resource ready to import right now, let me know:
-
-* What cloud provider are you using?
-* What type of resource is it (e.g., Security Group, SQL Database, DNS Record)?
-
-I can tell you the exact format or CLI command to extract its specific ID string.
-
-[1] [https://towardsthecloud.com](https://towardsthecloud.com/blog/find-aws-account-id)
-[2] [https://www.geeksforgeeks.org](https://www.geeksforgeeks.org/operating-systems/how-to-assign-a-node-id-to-each-node-in-distributed-systems/)
-[3] [https://www.geeksforgeeks.org](https://www.geeksforgeeks.org/cloud-computing/how-to-get-an-aws-ec2-instance-id-from-within-that-ec2-instance/)
-[4] [https://techdocs.genetec.com](https://techdocs.genetec.com/r/en-US/Genetec-ClearIDTM-User-Guide/About-the-ClearID-One-Identity-Synchronization-Tool)

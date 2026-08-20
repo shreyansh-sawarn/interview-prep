@@ -79,20 +79,6 @@ The core difference is that docker ps only shows currently active (running) cont
 
 ## Pro-Tip for Cleanup
 If docker ps -a reveals a massive list of old, stopped containers clogging your system, you can permanently wipe them out all at once using the docker container prune command. [11] 
-Are you trying to troubleshoot a container that keeps stopping, or are you just looking to clean up your local Docker environment?
-
-[1] [https://labs.iximiuz.com](https://labs.iximiuz.com/challenges/docker-101-list-containers-and-check-statuses)
-[2] [https://help.kendis.io](https://help.kendis.io/en/articles/3424549-how-to-make-changes-in-docker-configuration)
-[3] [https://www.pentestpartners.com](https://www.pentestpartners.com/security-blog/docker-for-hackers-a-pen-testers-guide/)
-[4] [https://www.instagram.com](https://www.instagram.com/reel/Daf1yU7OR7m/)
-[5] [https://www.cloudbees.com](https://www.cloudbees.com/blog/ensuring-containers-are-always-running-with-dockers-restart-policy)
-[6] [https://stackoverflow.com](https://stackoverflow.com/questions/45254677/is-there-a-difference-between-docker-ps-and-docker-container-ls)
-[7] [https://www.zhihu.com](https://www.zhihu.com/en/answer/1436192969)
-[8] [https://medium.com](https://medium.com/devops-technical-notes-and-manuals/understanding-docker-a-beginners-guide-for-junior-devops-69c02a78fa78)
-[9] [https://www.edureka.co](https://www.edureka.co/community/173639/what-does-command-in-docker-ps-mean)
-[10] [https://buddy.works](https://buddy.works/tutorials/docker-commands-cheat-sheet)
-[11] [https://medium.com](https://medium.com/@bm54cloud/persistent-data-and-docker-ac12e2a00ee5)
-
 
 # and is there something like docker ls?
 
@@ -117,21 +103,6 @@ Docker originally started with shortcuts like docker ps and docker images. To or
 | docker images | docker image ls |
 | docker rm [id] | docker container rm [id] |
 | docker rmi [id] | docker image rm [id] |
-
-Are you looking to find a specific type of resource (like a lost volume or network), or are you looking for tips on how to filter and format these lists?
-
-[1] [https://news.ycombinator.com](https://news.ycombinator.com/item?id=42834164)
-[2] [https://buddy.works](https://buddy.works/tutorials/docker-commands-cheat-sheet)
-[3] [https://www.altdigital.tech](https://www.altdigital.tech/resources/altdigitalpedia/docker)
-[4] [https://spin.atomicobject.com](https://spin.atomicobject.com/docker-command-line/)
-[5] [https://github.com](https://github.com/docker/docs/issues/5850)
-[6] [https://manpages.ubuntu.com](https://manpages.ubuntu.com/manpages/bionic/man1/docker-container-ls.1.html)
-[7] [https://spacelift.io](https://spacelift.io/blog/docker-list-containers)
-[8] [https://m.academy](https://m.academy/lessons/list-containers-docker/)
-[9] [https://tryhackme.com](https://tryhackme.com/room/introtodockerk8pdqk)
-[10] [https://testdriven.io](https://testdriven.io/blog/docker-for-beginners/)
-[11] [https://www.ionos.com](https://www.ionos.com/digitalguide/server/know-how/docker-commands/)
-[12] [https://www.geeksforgeeks.org](https://www.geeksforgeeks.org/devops/docker-instruction-commands/)
 
 # docker exec complete command
 
@@ -172,25 +143,6 @@ docker exec -it -u root my_app_container sh
 ## 4. Check Internal Container Environment Variables [15] 
 
 docker exec my_container env
-
-Do you need to troubleshoot a specific container right now, or are you looking for the best way to pass environment variables into the command?
-
-[1] [https://docs.docker.com](https://docs.docker.com/reference/cli/docker/container/exec/)
-[2] [https://crystallabs.io](https://crystallabs.io/docker/)
-[3] [https://dev.to](https://dev.to/naveens16/kubectl-demystified-mastering-the-kubectl-exec-command-5c1p)
-[4] [https://github.com](https://github.com/docker/for-linux/issues/963)
-[5] [https://hackr.io](https://hackr.io/blog/docker-container-ssh)
-[6] [https://spacelift.io](https://spacelift.io/blog/docker-exec)
-[7] [https://labex.io](https://labex.io/tutorials/docker-how-to-access-bash-shell-inside-a-running-docker-container-413807)
-[8] [https://runcloud.io](https://runcloud.io/blog/ssh-into-docker-container)
-[9] [https://docs.docker.com](https://docs.docker.com/reference/cli/docker/compose/exec/)
-[10] [https://www.baeldung.com](https://www.baeldung.com/ops/docker-container-tty)
-[11] [https://kodekloud.com](https://kodekloud.com/blog/docker-exec/)
-[12] [https://www.digitalocean.com](https://www.digitalocean.com/community/tutorials/how-to-use-docker-exec-to-run-commands-in-a-docker-container)
-[13] [https://flywp.com](https://flywp.com/blog/16233/ssh-into-a-docker-container/)
-[14] [https://spacelift.io](https://spacelift.io/blog/docker-exec)
-[15] [https://labex.io](https://labex.io/tutorials/docker-troubleshooting-docker-container-exits-immediately-391856)
-
 
 # how are env variables used in docker?
 
@@ -250,23 +202,3 @@ It is common to confuse ENV and ARG. They serve completely different purposes: [
 | When is it used? | Available during runtime while the container runs. | Available only during build time (docker build). |
 | Is it in the final image? | Yes, it persists in the image metadata. | No, it disappears after the image is built. |
 | Use Case | Database passwords, API URLs, app modes. | Setting software versions or download paths. |
-
-Are you trying to securely pass sensitive secrets (like API keys) to your application, or are you having trouble getting your application code to read the injected variables?
-
-[1] [https://configu.com](https://configu.com/blog/docker-environment-variables-arg-env-using-them-correctly/)
-[2] [https://phoenixnap.com](https://phoenixnap.com/kb/docker-environment-variables)
-[3] [https://blog.stackademic.com](https://blog.stackademic.com/angular-passing-runtime-data-to-the-application-running-in-a-docker-container-88115d0fcfe5)
-[4] [https://medium.com](https://medium.com/@cgaspard/dynamically-configuring-vue-js-apps-in-docker-containers-0d2570c8f48c)
-[5] [https://www.codecentric.de](https://www.codecentric.de/en/knowledge-hub/blog/react-application-container-environment-aware-kubernetes-deployment)
-[6] [https://www.paolomainardi.com](https://www.paolomainardi.com/posts/container-process-feel-at-home/)
-[7] [https://www.dash0.com](https://www.dash0.com/faq/how-to-pass-environment-variables-to-a-docker-container)
-[8] [https://apxml.com](https://apxml.com/courses/docker-for-ml-projects/chapter-2-building-ml-dockerfiles/docker-environment-variables)
-[9] [https://infisical.com](https://infisical.com/blog/stop-using-env-files)
-[10] [https://github.com](https://github.com/hashicorp/vault/issues/2057)
-[11] [https://spacelift.io](https://spacelift.io/blog/docker-run-environment-variables)
-[12] [https://www.cherryservers.com](https://www.cherryservers.com/blog/set-docker-environment-variables)
-[13] [https://www.baeldung.com](https://www.baeldung.com/ops/docker-containers-same-image-different-config)
-[14] [https://bluevps.com](https://bluevps.com/blog/how-to-set-docker-environment-variables)
-[15] [https://forums.docker.com](https://forums.docker.com/t/keep-env-variables-from-entrypoint/134942)
-[16] [https://vsupalov.com](https://vsupalov.com/docker-arg-vs-env/)
-[17] [https://cyberpanel.net](https://cyberpanel.net/blog/docker-build-args)
