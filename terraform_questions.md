@@ -1,35 +1,35 @@
 # how does terraform destroy work
 
-The terraform destroy command functions by permanently deleting all real-world infrastructure tracked within your active [Terraform state file](https://spacelift.io/blog/how-to-destroy-terraform-resources). Internally, modern versions of Terraform treat this command as a specialized alias for running terraform apply -destroy. [1, 2, 3] 
+The terraform destroy command functions by permanently deleting all real-world infrastructure tracked within your active [Terraform state file](https://spacelift.io/blog/how-to-destroy-terraform-resources). Internally, modern versions of Terraform treat this command as a specialized alias for running terraform apply -destroy.
 The exact lifecycle of how the command executes involves several distinct phases:
 ## 1. State Mapping & Refreshing
 
-* Reads the state file: Terraform checks the terraform.tfstate file to see exactly what real-world resources (e.g., specific AWS EC2 IDs, database instances) it is currently tracking. [2, 4] 
-* Queries cloud APIs: It contacts your cloud provider's API to refresh its knowledge and confirm that those resources still exist in the real world. [2] 
-* Ignores unmanaged resources: If a resource exists in your cloud environment but is not listed in your state file (such as infrastructure built manually via a web console), Terraform will completely ignore it and leave it untouched. [4, 5] 
+* Reads the state file: Terraform checks the terraform.tfstate file to see exactly what real-world resources (e.g., specific AWS EC2 IDs, database instances) it is currently tracking.
+* Queries cloud APIs: It contacts your cloud provider's API to refresh its knowledge and confirm that those resources still exist in the real world.
+* Ignores unmanaged resources: If a resource exists in your cloud environment but is not listed in your state file (such as infrastructure built manually via a web console), Terraform will completely ignore it and leave it untouched.
 
 ## 2. Dependency Graph Construction
 
 * Builds a dependency map: To avoid API deletion errors, Terraform analyzes how your resources rely on one another.
-* Calculates reverse order: It constructs a graph ensuring everything is deleted in reverse dependency order. For instance, if an EC2 instance lives inside a specific Security Group, Terraform will delete the EC2 instance first. If it tried to delete the Security Group first, the cloud provider would reject the request because it is still actively in use. [2, 4, 6, 7] 
+* Calculates reverse order: It constructs a graph ensuring everything is deleted in reverse dependency order. For instance, if an EC2 instance lives inside a specific Security Group, Terraform will delete the EC2 instance first. If it tried to delete the Security Group first, the cloud provider would reject the request because it is still actively in use.
 
 ## 3. Safety Check & User Confirmation
 
 * Generates a destroy plan: Before wiping any data, Terraform prints an interactive execution plan to your terminal window.
 * Visual indicator: Resources slated for deletion are highlighted with a red minus sign (-).
-* Halts for input: The process pauses and explicitly requires you to type yes before proceeding. You can skip this prompt in automated CI/CD pipelines by appending the -auto-approve flag. [2, 3, 6, 8, 9] 
+* Halts for input: The process pauses and explicitly requires you to type yes before proceeding. You can skip this prompt in automated CI/CD pipelines by appending the -auto-approve flag.
 
 ## 4. Destruction & State Updates
 
-* Triggers API deletes: Once confirmed, Terraform reaches out to the provider APIs in parallel (where safe) to execute the deletion commands. [5, 6] 
-* Clears the state file: As each resource successfully deletes, Terraform clears that item from your tracking state. [2, 6, 10] 
-* Retains code: The command does not alter your local .tf configuration files. Your infrastructure code remains fully intact, meaning you can run terraform apply at a later time to cleanly recreate the exact same environment from scratch. [4, 5, 11] 
+* Triggers API deletes: Once confirmed, Terraform reaches out to the provider APIs in parallel (where safe) to execute the deletion commands.
+* Clears the state file: As each resource successfully deletes, Terraform clears that item from your tracking state.
+* Retains code: The command does not alter your local .tf configuration files. Your infrastructure code remains fully intact, meaning you can run terraform apply at a later time to cleanly recreate the exact same environment from scratch.
 
 ## Safeguards and Fine-Tuning
 
 * Previewing safely: You can view what destroy will do without triggering the confirmation prompt by running terraform plan -destroy.
 * Targeted destruction: If you want to tear down a single resource instead of the entire architecture, use the targeted flag: terraform destroy -target=resource_type.resource_name.
-* Accidental protection: You can protect highly critical components (like production databases) by adding prevent_destroy = true inside the resource's lifecycle block. Terraform will completely block any manual or accidental execution of a full destroy command if a protected resource is targeted. [2, 3, 6, 11, 12] 
+* Accidental protection: You can protect highly critical components (like production databases) by adding prevent_destroy = true inside the resource's lifecycle block. Terraform will completely block any manual or accidental execution of a full destroy command if a protected resource is targeted.
 
 # give me the different types of terraform commands
 
@@ -40,39 +40,39 @@ These four commands represent the standard day-to-day lifecycle of infrastructur
 * terraform init: Prepares the working directory by downloading required cloud provider plugins and setting up backend state storage.
 * terraform validate: Checks the syntax, structure, and internal consistency of your .tf configuration files without connecting to remote cloud APIs.
 * terraform plan: Generates a preview execution plan, showing you exactly which resources will be created (+), modified (~), or destroyed (-).
-* terraform apply: Executes the changes required to reach the desired state defined in your code and updates the state file. [3, 4, 5, 6, 7] 
+* terraform apply: Executes the changes required to reach the desired state defined in your code and updates the state file.
 
 ## 2. Destruction Commands
-Used to tear down infrastructure safely. [8, 9] 
+Used to tear down infrastructure safely. 
 
 * terraform destroy: Purges all managed real-world resources tracked by the current configuration.
-* terraform plan -destroy: Generates a safe preview of what a destroy command would delete without actually executing it. [10, 11, 12, 13] 
+* terraform plan -destroy: Generates a safe preview of what a destroy command would delete without actually executing it.
 
 ## 3. State Management Commands
-Used to inspect or alter the terraform.tfstate tracking file without changing your cloud resources directly. [14, 15, 16] 
+Used to inspect or alter the terraform.tfstate tracking file without changing your cloud resources directly.
 
 * terraform state list: Outputs a plain text list of every resource currently tracked in your state file.
 * terraform state show: Displays the detailed attributes and metadata of a single, specific tracked resource.
 * terraform state rm: Removes a resource from your state file so Terraform stops tracking it, leaving the real-world infrastructure intact.
-* terraform import: Finds an existing, manually created real-world resource and pulls its tracking data into your state file. [17, 18, 19, 20, 21] 
+* terraform import: Finds an existing, manually created real-world resource and pulls its tracking data into your state file. 
 
 ## 4. Housekeeping & Utility Commands
-Used to keep code clean, readable, and dynamically functional. [22] 
+Used to keep code clean, readable, and dynamically functional.
 
 * terraform fmt: Rewrites all .tf files in the directory to match standard canonical formatting and spacing rules.
 * terraform output: Extracts and displays the values of declared output variables from the state file.
 * terraform console: Opens an interactive command-line terminal to test, evaluate, and experiment with Terraform expressions and functions.
-* terraform providers: Prints a structured tree showing all the cloud provider plugins required by the current configuration. [23, 24, 25, 26, 27] 
+* terraform providers: Prints a structured tree showing all the cloud provider plugins required by the current configuration.
 
 # what if there are 400 manually created different kinds of resources. how to import all of them? and how to maintain them?
 
-Importing 400 manually created resources is a common enterprise challenge. Running the legacy terraform import command 400 times by hand would be incredibly tedious and error-prone. [1] 
-The most scalable, modern way to execute this is by using Declarative Import Blocks with Auto-Code Generation (introduced in modern Terraform versions) or open-source bulk tools. [2, 3] 
+Importing 400 manually created resources is a common enterprise challenge. Running the legacy terraform import command 400 times by hand would be incredibly tedious and error-prone. 
+The most scalable, modern way to execute this is by using Declarative Import Blocks with Auto-Code Generation (introduced in modern Terraform versions) or open-source bulk tools. 
 ------------------------------
 ## Part 1: How to Import 400 Resources
-Do not attempt to import all 400 resources at once. Break them down by layer (e.g., networking first, then databases, then compute). Use one of the two strategies below: [4, 5] 
+Do not attempt to import all 400 resources at once. Break them down by layer (e.g., networking first, then databases, then compute). Use one of the two strategies below: 
 ## Strategy A: Native Terraform Config Generation (Recommended)
-This approach uses a declarative import block combined with a code generation flag to dynamically write your .tf configuration files for you. [2, 6] 
+This approach uses a declarative import block combined with a code generation flag to dynamically write your .tf configuration files for you.
 
    1. Write an imports.tf file: Gather the cloud IDs of your resources using your cloud provider's CLI or inventory tool. Write out import blocks for a batch of resources (e.g., 50 at a time):
    
@@ -86,34 +86,33 @@ This approach uses a declarative import block combined with a code generation fl
      id = "my-manually-created-bucket-name"
    }
    
-   [3, 4, 7, 8, 9] 
    2. Generate the HCL code: Run the plan command with the config generation flag pointed to a fresh file:
    
    terraform plan -generate-config-out=generated_resources.tf
    
-   Terraform will reach out to the cloud APIs, fetch the settings of those resources, and automatically write the standard resource "aws_vpc" and resource "aws_s3_bucket" code blocks inside generated_resources.tf. [4, 8, 10, 11, 12] 
-   3. Review and Clean: Open generated_resources.tf. Strip out cloud-calculated read-only values (like specific creation dates or auto-assigned IDs) that shouldn't be hardcoded. [3, 8, 13] 
-   4. Execute the Import: Run terraform apply. Terraform will map those real-world resources to your newly generated code and save them safely inside your terraform.tfstate file. [6, 14, 15] 
+   Terraform will reach out to the cloud APIs, fetch the settings of those resources, and automatically write the standard resource "aws_vpc" and resource "aws_s3_bucket" code blocks inside generated_resources.tf.
+   3. Review and Clean: Open generated_resources.tf. Strip out cloud-calculated read-only values (like specific creation dates or auto-assigned IDs) that shouldn't be hardcoded.
+   4. Execute the Import: Run terraform apply. Terraform will map those real-world resources to your newly generated code and save them safely inside your terraform.tfstate file.
 
 ## Strategy B: Use Bulk Open-Source Tools (Like Terraformer)
 If retrieving 400 IDs manually is too time-consuming, use a reverse-engineering tool like [Terraformer by Waze](https://stackoverflow.com/questions/66884517/terraform-aws-is-it-possible-to-import-all-aws-resources-in-one-time-terrafo).
 
 * Terraformer allows you to point to a cloud account/region and tell it to dump every existing resource.
 * Command example: terraformer import aws --resources=vpc,subnet,sg,ec2 --regions=us-east-1
-* Warning: The code generated by third-party tools can be very messy and hard to read. You will need to spend time refactoring it. [4, 16, 17] 
+* Warning: The code generated by third-party tools can be very messy and hard to read. You will need to spend time refactoring it.
 
 ------------------------------
 ## Part 2: How to Maintain 400+ Resources
 Once everything is captured in state, transition your workflow away from the web console entirely to prevent your code from becoming obsolete.
 ## 1. Enforce a "No Console" Freeze
-Implement a strict team policy: no one modifies these 400 resources via the cloud web console again. Any changes (adding a tag, changing a size, resizing a disk) must be edited in the .tf files and applied via terraform apply. [14, 18, 19] 
+Implement a strict team policy: no one modifies these 400 resources via the cloud web console again. Any changes (adding a tag, changing a size, resizing a disk) must be edited in the .tf files and applied via terraform apply. 
 ## 2. Segment into Multiple State Files (Blast Radius Management)
-Do not keep 400 resources inside a single, massive Terraform state file. If one resource errors out, it could lock or stall your entire pipeline. Separate them into isolated structural workspaces or folders: [4, 18, 20, 21] 
+Do not keep 400 resources inside a single, massive Terraform state file. If one resource errors out, it could lock or stall your entire pipeline. Separate them into isolated structural workspaces or folders:
 
 * Folder 1 (Core Network): VPCs, Subnets, Internet Gateways.
 * Folder 2 (Data Layer): RDS Databases, S3 Buckets, Redis clusters.
 * Folder 3 (App Layer): EC2 instances, Load Balancers, ECS tasks.
-* Link them together safely using the terraform_remote_state data source. [6, 20, 22, 23] 
+* Link them together safely using the terraform_remote_state data source. 
 
 ## 3. Automate Drift Detection
 Even with strict rules, someone might bypass Terraform and make an emergency change via the cloud console. [24] 
@@ -125,12 +124,12 @@ Even with strict rules, someone might bypass Terraform and make an emergency cha
 
 * Save your state file in a secure, central location like an AWS S3 Bucket or Azure Blob Storage.
 * Turn on State Locking (via AWS DynamoDB) to stop two developers from running commands at the exact same time and corrupting your state.
-* Turn on Bucket Versioning. If a bulk command corrupts your file, you can roll back to the previous state version instantly. [20, 25, 26] 
+* Turn on Bucket Versioning. If a bulk command corrupts your file, you can roll back to the previous state version instantly.
 
 # difference between count and for each
 
 Both count and for_each are meta-arguments used in Terraform to deploy multiple copies of a resource or module without copying and pasting code blocks. [1, 2, 3] 
-The core difference is that count manages resources using a numeric index (a list), while for_each manages resources using specific string identifiers (a map or set). [4, 5, 6, 7] 
+The core difference is that count manages resources using a numeric index (a list), while for_each manages resources using specific string identifiers (a map or set).
 ------------------------------
 ## Comparison Matrix
 
@@ -143,7 +142,7 @@ The core difference is that count manages resources using a numeric index (a lis
 
 ------------------------------
 ## 1. Count (The List Approach)
-count takes a whole number and creates that exact number of resources. Terraform tracks them using zero-indexed positions ([0], [1], [2]). [8, 9, 10, 11, 12] 
+count takes a whole number and creates that exact number of resources. Terraform tracks them using zero-indexed positions ([0], [1], [2]).
 
 variable "user_names" {
   type    = list(string)
@@ -156,10 +155,10 @@ resource "aws_iam_user" "users" {
 }
 
 
-* The Index Trap: If you remove "bob" from the middle of your list variable, the list shrinks from 3 elements to 2. To Terraform, position [1] changes from "bob" to "charlie". As a result, Terraform will rename or destroy and recreate your third user instead of simply deleting the second one. [13, 14] 
+* The Index Trap: If you remove "bob" from the middle of your list variable, the list shrinks from 3 elements to 2. To Terraform, position [1] changes from "bob" to "charlie". As a result, Terraform will rename or destroy and recreate your third user instead of simply deleting the second one.
 
 ## 2. For Each (The Map Approach)
-for_each loops through a set or a map. Instead of using numbers, Terraform identifies each resource using the specific key provided. [15, 16, 17] 
+for_each loops through a set or a map. Instead of using numbers, Terraform identifies each resource using the specific key provided.
 
 variable "user_names" {
   type    = set(string)
@@ -179,15 +178,15 @@ resource "aws_iam_user" "users" {
 
 * Use count if:
 * You need multiple completely identical resources (e.g., "give me 5 identical web servers").
-   * You are writing conditional logic to turn a resource on or off (e.g., count = var.create_db ? 1 : 0). [18, 19] 
+   * You are writing conditional logic to turn a resource on or off (e.g., count = var.create_db ? 1 : 0).
 * Use for_each if:
 * You are creating resources that require unique names, configurations, or distinct parameters.
-   * The list of items could change over time, and you want to be able to add or delete items from the middle of the collection safely. [20, 21, 22, 23, 24] 
+   * The list of items could change over time, and you want to be able to add or delete items from the middle of the collection safely.
 
 # difference between variables.tf and locals.tf
 
-The foundational difference is that variables.tf defines your public input parameters, whereas locals.tf defines your private internal calculations. [1, 2] 
-If your Terraform configuration were a programming function, variables would be the arguments passed into the function, and locals would be the temporary variables declared inside the function body to run calculations. [3, 4] 
+The foundational difference is that variables.tf defines your public input parameters, whereas locals.tf defines your private internal calculations. 
+If your Terraform configuration were a programming function, variables would be the arguments passed into the function, and locals would be the temporary variables declared inside the function body to run calculations.
 ------------------------------
 ## Key Comparison
 
@@ -201,7 +200,7 @@ If your Terraform configuration were a programming function, variables would be 
 
 ------------------------------
 ## Deep Dive: variables.tf
-Use this file to expose customizable inputs to a user or automated pipeline. You should never perform complex string manipulation or logic inside a variable block; it is strictly a declaration of an expected input. [2, 5] 
+Use this file to expose customizable inputs to a user or automated pipeline. You should never perform complex string manipulation or logic inside a variable block; it is strictly a declaration of an expected input. 
 
 # Inside variables.tf
 variable "environment" {
@@ -216,7 +215,7 @@ variable "base_name" {
 }
 
 ## Deep Dive: locals.tf
-Use this file to handle internal calculations, merge tag blocks, build naming conventions, or combine inputs. Locals are powerful because they can reference your variables, data sources, and other resources to dynamically compute a value. [5, 6, 7] 
+Use this file to handle internal calculations, merge tag blocks, build naming conventions, or combine inputs. Locals are powerful because they can reference your variables, data sources, and other resources to dynamically compute a value.
 
 # Inside locals.tf
 locals {
@@ -232,7 +231,7 @@ locals {
 }
 
 ## How They Work Together in main.tf
-When constructing your actual infrastructure, you pull data from both sources based on who should be controlling the final result. [5] 
+When constructing your actual infrastructure, you pull data from both sources based on who should be controlling the final result. 
 
 # Inside main.tf
 resource "aws_s3_bucket" "storage" {
@@ -246,8 +245,8 @@ resource "aws_s3_bucket" "storage" {
 ------------------------------
 ## Golden Rules for Best Practices
 
-* Don't weaponize locals: A common anti-pattern is creating deeply nested, 50-line local expressions that reference other locals five layers deep. If a local is too hard to read, it becomes impossible to debug. Keep them simple. [2, 7] 
-* Control vs. Logic: If a team member needs to change the value across different environments (like moving from staging to production), it belongs in variables.tf. If the value is a strict rule that should never be manipulated externally (like a corporate naming scheme), it belongs in locals.tf. [2, 5, 7] 
+* Don't weaponize locals: A common anti-pattern is creating deeply nested, 50-line local expressions that reference other locals five layers deep. If a local is too hard to read, it becomes impossible to debug. Keep them simple.
+* Control vs. Logic: If a team member needs to change the value across different environments (like moving from staging to production), it belongs in variables.tf. If the value is a strict rule that should never be manipulated externally (like a corporate naming scheme), it belongs in locals.tf. 
 
 # what is terraform lifecycle? and remote backend?
 
@@ -310,16 +309,16 @@ terraform {
 
 # how to unlock a locked state file?
 
-To unlock a locked state file, you must remove the lock that Terraform uses to prevent concurrent operations. When an operation finishes normally, Terraform releases this lock automatically. However, if a migration crashes, losing connection mid-run, or if you force-quit a command using Ctrl + C, the lock remains stuck in place. [1, 2, 3] 
+To unlock a locked state file, you must remove the lock that Terraform uses to prevent concurrent operations. When an operation finishes normally, Terraform releases this lock automatically. However, if a migration crashes, losing connection mid-run, or if you force-quit a command using Ctrl + C, the lock remains stuck in place.
 ------------------------------
 ## Step 1: The Safe Way (Cancel the active process)
-Before running any unlock commands, you must ensure that no one else on your team is actively running a deploy. [4] 
+Before running any unlock commands, you must ensure that no one else on your team is actively running a deploy.
 
 * If a CI/CD pipeline or a teammate is legitimately running an infrastructure update, forcing an unlock will corrupt your state file.
-* Check your team communication channels, build pipelines, or task manager to confirm the process is completely dead. [5, 6, 7, 8] 
+* Check your team communication channels, build pipelines, or task manager to confirm the process is completely dead. 
 
 ## Step 2: Extract the Lock ID
-When Terraform blocks your execution due to a lock, it prints an error message to your terminal window. Look closely at that terminal output to find the Lock ID. [9] 
+When Terraform blocks your execution due to a lock, it prints an error message to your terminal window. Look closely at that terminal output to find the Lock ID.
 The error message looks similar to this:
 
 Error: Error acquiring the state lock
@@ -334,7 +333,7 @@ Lock Info:
 * Locate the ID line: Copy the long string of numbers and letters next to ID: (e.g., e4c8436b-2856-c215-05e8-55d0f15610ec).
 
 ## Step 3: Run the Force-Unlock Command
-Once you have confirmed no process is running and you have the Lock ID, execute the native Terraform force-unlock command inside your project directory: [10, 11, 12] 
+Once you have confirmed no process is running and you have the Lock ID, execute the native Terraform force-unlock command inside your project directory:
 
 terraform force-unlock <LOCK_ID>
 
@@ -342,45 +341,45 @@ Example:
 
 terraform force-unlock e4c8436b-2856-c215-05e8-55d0f15610ec
 
-Terraform will ask for verification. Type yes to confirm. This instantly breaks the lock and frees your state file up for new plans or applications. [13] 
+Terraform will ask for verification. Type yes to confirm. This instantly breaks the lock and frees your state file up for new plans or applications.
 ------------------------------
 ## Alternative: Manual Back-End Removal (When force-unlock fails)
-Rarely, if your cloud permissions are broken or your local environment loses access configuration, terraform force-unlock might fail to clear the backend. You can clear it manually depending on what backend you use: [14, 15, 16] 
+Rarely, if your cloud permissions are broken or your local environment loses access configuration, terraform force-unlock might fail to clear the backend. You can clear it manually depending on what backend you use:
 
-* AWS S3 + DynamoDB: Open your AWS Web Console, navigate to your DynamoDB table (the one specified in your backend block), look at the table items, find the row matching your State Path or Lock ID, and delete that row manually. [17] 
+* AWS S3 + DynamoDB: Open your AWS Web Console, navigate to your DynamoDB table (the one specified in your backend block), look at the table items, find the row matching your State Path or Lock ID, and delete that row manually.
 * Azure Blob Storage: Navigate to your storage account container inside the Azure Portal, click on the specific .tfstate blob file, and click Break Lease in the toolbar. [18, 19, 20] 
-* HashiCorp Cloud Platform (HCP) / Terraform Cloud: Open the web workspace UI, navigate to the Settings menu, select Locking, and click the clear/unlock button directly inside the interface. [21, 22]
+* HashiCorp Cloud Platform (HCP) / Terraform Cloud: Open the web workspace UI, navigate to the Settings menu, select Locking, and click the clear/unlock button directly inside the interface.
 
 # terraform import command
 
 The terraform import command is used to bring existing, manually created cloud infrastructure under Terraform management. It reads the real-world configuration of a resource via cloud APIs and maps it directly into your terraform.tfstate tracking file. [1, 2, 3, 4] 
-However, how you use this command depends heavily on whether you are using a modern version of Terraform (v1.5+) or an older version. [5, 6, 7] 
+However, how you use this command depends heavily on whether you are using a modern version of Terraform (v1.5+) or an older version. 
 ------------------------------
 ## The Modern Way: Declarative import Blocks (Terraform v1.5+)
-Instead of typing long commands in the terminal, modern Terraform allows you to define imports directly inside your code using an import block. This approach can also automatically generate your configuration files for you. [8, 9, 10, 11] 
+Instead of typing long commands in the terminal, modern Terraform allows you to define imports directly inside your code using an import block. This approach can also automatically generate your configuration files for you.
 ## Step 1: Write the import block
-Create a file named imports.tf and declare the resource you want to import along with its real-world cloud ID: [12, 13] 
+Create a file named imports.tf and declare the resource you want to import along with its real-world cloud ID: 
 
 import {
   to = aws_s3_bucket.my_imported_bucket
   id = "manually-created-bucket-name-in-aws"
 }
 
-## Step 2: Automatically generate the HCL code [14] 
+## Step 2: Automatically generate the HCL code
 Run the planning command with the code-generation flag. This tells Terraform to inspect the cloud resource and automatically write the standard resource block for you: [15, 16, 17, 18, 19] 
 
 terraform plan -generate-config-out=generated_resources.tf
 
 ## Step 3: Complete the import
-Review the newly created generated_resources.tf file to make sure it looks correct, then run: [20, 21] 
+Review the newly created generated_resources.tf file to make sure it looks correct, then run:
 
 terraform apply
 
-Terraform will bind the real-world resource to your state file. You can now delete the temporary import {} block from your code. [22, 23] 
+Terraform will bind the real-world resource to your state file. You can now delete the temporary import {} block from your code.
 ------------------------------
 ## The Legacy Way: CLI Command (Terraform v1.4 and older)
-In older versions, terraform import only updates your state file. It does not write code for you. If you use this method, you must write the empty resource definition in your .tf files manually before running the command. [24, 25, 26, 27] 
-## Step 1: Write an empty block in your code [28] 
+In older versions, terraform import only updates your state file. It does not write code for you. If you use this method, you must write the empty resource definition in your .tf files manually before running the command.
+## Step 1: Write an empty block in your code 
 
 # main.tf
 resource "aws_s3_bucket" "my_imported_bucket" {
@@ -405,8 +404,6 @@ terraform import aws_instance.web_server i-0123456789abcdef0
 * Azure Resource Group:
 
 terraform import azurerm_resource_group.rg /subscriptions/0000-0000/resourceGroups/my-rg
-
-[31, 32, 33, 34] 
 
 ## Step 3: Align your code
 Run terraform plan. Because your resource block is blank, Terraform will show a massive list of differences. You must manually copy those settings into your main.tf block until running terraform plan outputs: "No changes. Your infrastructure matches the configuration." [35, 36, 37, 38, 39] 

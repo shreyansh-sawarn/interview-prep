@@ -58,7 +58,7 @@ Don't say **"ADD is used to download files from any URL"** as your main explanat
 
 # docker ps and docker ps -a difference
 
-The core difference is that docker ps only shows currently active (running) containers, while docker ps -a (short for --all) shows all containers on your system, regardless of their status. [1, 2] 
+The core difference is that docker ps only shows currently active (running) containers, while docker ps -a (short for --all) shows all containers on your system, regardless of their status.
 ## Quick Summary
 
 | Command | What It Displays | Common Use Case |
@@ -69,21 +69,19 @@ The core difference is that docker ps only shows currently active (running) cont
 ------------------------------
 ## Key Differences Broken Down
 
-* 
-* Visibility: If a container crashes, exits successfully, or is stopped manually, docker ps will immediately hide it. Adding the -a flag unhides these dead or paused processes. [1, 2, 3, 4, 5] 
+* Visibility: If a container crashes, exits successfully, or is stopped manually, docker ps will immediately hide it. Adding the -a flag unhides these dead or paused processes.
 * The "STATUS" Column:
 * In docker ps, the status will almost always read Up X hours/minutes.
    * In docker ps -a, you will see statuses like Exited (0) 5 minutes ago (successful shutdown) or Exited (137) (often out-of-memory crashes).
-* Modern Equivalent: Note that docker ps is an older shorthand. In modern workflows, you can also use docker container ls (for running) and docker container ls -a (for all). [6, 7, 8, 9, 10] 
-* 
+* Modern Equivalent: Note that docker ps is an older shorthand. In modern workflows, you can also use docker container ls (for running) and docker container ls -a (for all).
 
 ## Pro-Tip for Cleanup
-If docker ps -a reveals a massive list of old, stopped containers clogging your system, you can permanently wipe them out all at once using the docker container prune command. [11] 
+If docker ps -a reveals a massive list of old, stopped containers clogging your system, you can permanently wipe them out all at once using the docker container prune command.
 
 # and is there something like docker ls?
 
-Yes, but docker ls does not exist as a standalone command. [1] 
-Because Docker manages many different types of resources, it uses ls (list) as a sub-command under specific categories. [2, 3, 4] 
+Yes, but docker ls does not exist as a standalone command.
+Because Docker manages many different types of resources, it uses ls (list) as a sub-command under specific categories. 
 ## Modern Docker ls Commands
 Instead of one generic docker ls, you use the specific resource you want to see:
 
@@ -117,40 +115,40 @@ If you want to open an interactive terminal session inside a running container, 
 
 docker exec -it <container_name_or_id> /bin/bash
 
-(If the container is minimal and doesn't have bash, use /bin/sh or just sh instead). [3, 4, 5] 
+(If the container is minimal and doesn't have bash, use /bin/sh or just sh instead).
 ------------------------------
 ## Key Options (-it) Explained
 
 * -i (interactive): Keeps standard input (STDIN) open, allowing you to type.
 * -t (tty): Allocates a pseudo-TTY, giving you a terminal prompt (like root@container:/#).
 * -u (user): Runs the command as a specific user. (Example: -u root).
-* -w (workdir): Changes the directory inside the container before running the command. [6, 7, 8, 9, 10] 
+* -w (workdir): Changes the directory inside the container before running the command.
 
 ------------------------------
-## Practical Examples## 1. Open an Interactive Shell (Most Popular) [11] 
+## Practical Examples## 1. Open an Interactive Shell (Most Popular)
 
 docker exec -it my_web_server bash
 
-## 2. Run a Single Command Without Entering (Non-Interactive) [12] 
-You do not need -it if you just want to see a quick result: [13] 
+## 2. Run a Single Command Without Entering (Non-Interactive)
+You do not need -it if you just want to see a quick result: 
 
 docker exec my_postgres_db psql -U postgres -c "SELECT 1;"
 
-## 3. Run a Command as Root (Bypass Default User) [14] 
+## 3. Run a Command as Root (Bypass Default User)
 
 docker exec -it -u root my_app_container sh
 
-## 4. Check Internal Container Environment Variables [15] 
+## 4. Check Internal Container Environment Variables
 
 docker exec my_container env
 
 # how are env variables used in docker?
 
-Environment variables in Docker are used to configure applications without changing the underlying image or code. They are highly flexible and can be injected during the build phase, the runtime phase, or hardcoded inside a Dockerfile. [1, 2, 3, 4, 5] 
+Environment variables in Docker are used to configure applications without changing the underlying image or code. They are highly flexible and can be injected during the build phase, the runtime phase, or hardcoded inside a Dockerfile.
 Here is exactly how to use them across different scenarios.
 ------------------------------
 ## 1. Passing Variables at Runtime (Most Common)
-If you want to inject variables dynamically when starting a container, use the runtime flags with docker run. [6] 
+If you want to inject variables dynamically when starting a container, use the runtime flags with docker run.
 
 * The -e Flag (Single Variable): Pass key-value pairs directly.
 
@@ -168,15 +166,15 @@ docker run -d --env-file .env mysql
 
 ------------------------------
 ## 2. Hardcoding Variables in a Dockerfile
-If a variable is constant and safe to share (not a secret), you can bake it directly into the image using the ENV instruction. [10] 
+If a variable is constant and safe to share (not a secret), you can bake it directly into the image using the ENV instruction. 
 
 FROM node:20# Set the variableENV PORT=3000ENV NODE_ENV=production
 EXPOSE $PORTCMD ["node", "server.js"]
 
-Note: Any variable set via ENV in a Dockerfile can still be overridden at runtime using the -e flag. [11, 12] 
+Note: Any variable set via ENV in a Dockerfile can still be overridden at runtime using the -e flag.
 ------------------------------
 ## 3. Using Variables in Docker Compose
-Docker Compose makes managing environment variables much cleaner for multi-container setups. You can define them directly in your docker-compose.yml file. [13, 14] 
+Docker Compose makes managing environment variables much cleaner for multi-container setups. You can define them directly in your docker-compose.yml file.
 
 version: '3.8'services:
   web:
@@ -189,13 +187,13 @@ version: '3.8'services:
 
 ------------------------------
 ## 4. Viewing Active Variables Inside a Container
-If you need to verify that your variables were injected correctly, use the docker exec command you learned earlier to list them. [15] 
+If you need to verify that your variables were injected correctly, use the docker exec command you learned earlier to list them. 
 
 docker exec <container_id_or_name> env
 
 ------------------------------
 ## ⚠️ Crucial Distinction: ENV vs. ARG
-It is common to confuse ENV and ARG. They serve completely different purposes: [16, 17] 
+It is common to confuse ENV and ARG. They serve completely different purposes:
 
 | Feature | ENV (Environment Variable) | ARG (Build Argument) |
 |---|---|---|
